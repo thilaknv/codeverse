@@ -1,18 +1,15 @@
 import { useEffect, useState } from "react";
 import DropDown from "../assets/drop_down.png";
-import { questions } from "../../helpers/questions";
-import { useLocation } from "react-router-dom";
 
 interface Props {
   expandOutput: React.Dispatch<React.SetStateAction<number>>;
   output?: any;
+  loading: boolean;     
+  question: any;
 }
 
-const Output = ({ expandOutput, output }: Props) => {
-  const { pathname } = useLocation();
-  const Qno = Number(pathname.split("/")[2]);
-
-  const { examples } = questions[Qno - 1];
+const Output = ({ expandOutput, output, loading, question }: Props) => {
+  const { examples } = question;
   const [caseTab, changeCaseTab] = useState(0);
   const [tab, changeTab] = useState(true);
   const [stdout, setStdout] = useState<any>("");
@@ -21,7 +18,7 @@ const Output = ({ expandOutput, output }: Props) => {
 
   useEffect(() => {
     if (!output) {
-      setStdout("There was an error");
+      setStdout("stdout");
       return;
     }
     const { compile_output, status, stdout, stderr } = output;
@@ -29,14 +26,14 @@ const Output = ({ expandOutput, output }: Props) => {
       setStdout(compile_output);
     } else if (stderr != null) {
       setStdout(stderr);
-    } else if (stdout != null) {
+    } else if (stdout != null && stdout.includes("%break%")) {
       const [stdout1, stdout2] = stdout.split("%break%");
-      const [output_string, result_string] = stdout2.split("%result%");
-      console.log(output_string.length);
-      set_std_output(output_string.split("|"));
-      set_std_result(result_string.split("|"));
-      console.log(std_output, std_result);
-      changeTab(true);
+      if (stdout2.includes("%result%")) {
+        const [output_string, result_string] = stdout2.split("%result%");
+        set_std_output(output_string.split("|"));
+        set_std_result(result_string.split("|"));
+        changeTab(true);
+      }
       setStdout(stdout1);
       return;
     } else if (status && status.id != 3) {
@@ -44,6 +41,7 @@ const Output = ({ expandOutput, output }: Props) => {
     }
     changeTab(false);
   }, [output]);
+
   return (
     <div className="testcase-output">
       <header className="t-o-header">
@@ -59,6 +57,7 @@ const Output = ({ expandOutput, output }: Props) => {
         >
           Output
         </strong>
+        {loading && <span className="loader"></span>}
         <img
           src={DropDown}
           className="rotate"
@@ -76,17 +75,17 @@ const Output = ({ expandOutput, output }: Props) => {
       {tab && (
         <div className="t-o-container">
           <div className="cases-header">
-            {examples.map((example, index) => (
+            {examples.map((ex: any, i: number) => (
               <strong
-                key={index}
-                className={caseTab == index ? "selected case" : "case"}
-                onClick={() => changeCaseTab(index)}
+                key={i}
+                className={caseTab == i ? "selected case" : "case"}
+                onClick={() => changeCaseTab(i)}
               >
-                Case {index + 1}
-                {std_result.length > index && std_result[index] == 1 && (
+                Case {i + 1}
+                {std_result.length > i && std_result[i] == 1 && (
                   <small className="correct">&#10004;</small>
                 )}
-                {std_result.length > index && std_result[index] == 0 && (
+                {std_result.length > i && std_result[i] == 0 && (
                   <small className="wrong">&#10006;</small>
                 )}
               </strong>

@@ -6,40 +6,64 @@ import {
   useEffect,
 } from "react";
 import { AuthProps } from "../../helpers/types";
-import { auth, googleProvider } from "../../config/firebase";
+import { auth, googleProvider } from "../database/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithPopup,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
+import { addUser, getUser } from "../database/store";
 
 const AuthContext = createContext<AuthProps | null>(null);
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const [currentUser, setCurrentUser] = useState<object | null>(
-    auth.currentUser
-  );
+  const [currentUser, setCurrentUser] = useState<any>(null);
+  const [USER, setUSER] = useState<any>(null);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((currUser) => {
+    onAuthStateChanged(auth, (currUser) => {
       setCurrentUser(currUser);
     });
-    return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    const setUSERHelper = async () => {
+      try {
+        const user = await getUser("email", currentUser.email);
+        setUSER(user);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    currentUser && currentUser.email && setUSERHelper();
+  }, [currentUser]);
 
   // register
   const signUpWithEmail = async (
+    username: string,
     email: string,
     password: string,
     setErrorMessage: (errorMessage: string) => void
   ) => {
     try {
-      await createUserWithEmailAndPassword(auth, email, password);
+      const user = await getUser("username", username);
+      if (user) {
+        throw new Error("username-exists");
+      }
+      await createUserWithEmailAndPassword(auth, email, password).then(
+        (userCredentials) => {
+          const { email, uid } = userCredentials.user;
+          addUser(String(username), String(email), uid);
+        }
+      );
       return true;
     } catch (error: any) {
-      const errorCode = error.code.split("/")[1];
-      setErrorMessage(errorCode);
+      const errorMsg = error.code ? error.code.split("/")[1] : error.message;
+      setErrorMessage(errorMsg);
+      return false;
     }
     //
   };
@@ -56,15 +80,22 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     } catch (error: any) {
       const errorCode = error.code.split("/")[1];
       setErrorMessage(errorCode);
+      return false;
     }
   };
 
   const signInWithGoogle = async () => {
     try {
-      await signInWithPopup(auth, googleProvider);
+      await signInWithPopup(auth, googleProvider).then((userCredentials) => {
+        // adduser to database
+        const { email, uid, photoURL } = userCredentials.user;
+        if (!email) return;
+        const username = email?.split("@")[0];
+        addUser(String(username), String(email), uid, photoURL);
+      });
       return true;
     } catch (error) {
-      // console.error(error);
+      return false;
     }
   };
 
@@ -74,10 +105,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     <AuthContext.Provider
       value={{
         currentUser,
+        USER,
         signUpWithEmail,
         signInWithEmail,
         signInWithGoogle,
         logout,
+        setUSER,
       }}
     >
       {children}
@@ -85,6 +118,4 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);

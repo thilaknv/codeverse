@@ -1,75 +1,66 @@
-import {} from "react";
-import { useLocation } from "react-router-dom";
-import { questions } from "../../helpers/questions";
-
-const Question = () => {
-  const { pathname } = useLocation();
-  const Qno = Number(pathname.split("/")[2]);
-
-  const {
-    id,
-    title,
-    question,
-    difficulty,
-    solved,
-    examples,
-    images,
-    constraints,
-    topics,
-  } = questions[Qno - 1];
+const Question = ({ question }: any) => {
+  const difficulty = ["Easy", "Medium", "Hard"];
+  
   return (
     <div className="question">
       <div className="q-head">
         <h2 className="q-title">
-          {id + ". "}
-          {title}
+          {question.qid + ". "}
+          {question.title}
         </h2>
         <div>
-          <small className={solved ? "Solved" : "Unsolved"}>
-            {solved ? "Solved" : "Unsolved"}
+          <small className={question.solved ? "Solved" : "Unsolved"}>
+            {question.solved ? "Solved" : "Unsolved"}
           </small>
-          <small className={difficulty}>{difficulty}</small>
+          <small className={difficulty[question.difficulty]}>
+            {difficulty[question.difficulty]}
+          </small>
         </div>
       </div>
 
-      <p className="q-question">{question}</p>
-      {images &&
-        images.map((img, index) => <img src={img} alt="abc" key={index} />)}
-
-      {examples &&
-        examples.map((example, index) => (
-          <div className="example" key={index}>
-            <h5>Example {index + 1}:</h5>
-            <ul>
-              <dl>
-                <strong>Input: </strong>
-                {example.input}
-              </dl>
-              <dl>
-                <strong>Output: </strong>
-                {example.output}
-              </dl>
-            </ul>
-          </div>
+      <div className="q-question">
+        {question.description.map((p: string, i: number) => (
+          <p key={i}>{p}</p>
         ))}
+      </div>
+      {/* {images &&
+        images.map((img, index) => <img src={img} alt="abc" key={index} />)} */}
 
-      {constraints && constraints.length && (
+      {question.examples.map((example: any, i: number) => (
+        <div className="example" key={i}>
+          <h5>Example {i + 1}:</h5>
+          <ul>
+            <dl>
+              <strong>Input: </strong>
+              <span>{example.input}</span>
+            </dl>
+            <dl>
+              <strong>Output: </strong>
+              <span>{example.output}</span>
+            </dl>
+          </ul>
+        </div>
+      ))}
+
+      {question.constraints && question.constraints.length && (
         <div>
           <h5 className="q-constraints">Constraints:</h5>
           <ul className="constraints">
-            {constraints.map((constraint, index) => {
-              return <li key={index}>{constraint}</li>;
+            {question.constraints.map((constraint: string, i: number) => {
+              return <li key={i}>{constraint}</li>;
             })}
           </ul>
         </div>
       )}
 
-      {topics && (
+      {question.topics && (
         <div>
           <h5>Topics:</h5>
           <div className="q-topic blur">
-            {topics &&
-              topics.map((topic, index) => <small key={index}>{topic}</small>)}
+            {question.topics &&
+              question.topics.map((topic: string, i: number) => (
+                <small key={i}>{topic}</small>
+              ))}
           </div>
         </div>
       )}

@@ -9,20 +9,20 @@ interface ProtectProps {
 
 const Protect = ({ children }: ProtectProps) => {
   const { pathname } = useLocation();
-  const { currentUser } = useAuth() as AuthProps;
+  const { USER } = useAuth() as AuthProps;
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(!currentUser);
+  const [loading, setLoading] = useState(!USER);
   useEffect(() => {
-    if (!currentUser && !loading) {
+    if (!USER && !loading) {
       navigate(`/login?redirect=${encodeURIComponent(pathname)}`);
     }
-  }, [currentUser, loading, navigate, pathname]);
+  }, [USER, loading, navigate, pathname]);
 
   useEffect(() => {
-    if (currentUser !== null) {
-      setLoading(false);
-    }
-  }, [currentUser]);
+    USER != null && setLoading(false);
+  }, [USER]);
+
+  setTimeout(() => setLoading(false), 5000);
 
   if (loading) {
     return (

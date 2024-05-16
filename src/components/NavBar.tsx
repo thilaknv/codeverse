@@ -1,29 +1,24 @@
-import { Link } from "react-router-dom";
-import ProfPic from "../assets/react.svg";
+import { Link, useLocation } from "react-router-dom";
+import DefaultProfilePic from "../assets/profile.png";
 import Logo from "../assets/logo.svg";
 import LightMode from "../assets/light_mode.png";
 import DarkMode from "../assets/dark_mode.png";
 import { useEffect, useState } from "react";
-import { changeTheme, themeColors } from "../../helpers/logics";
+import {} from "../../helpers/logics";
 import { useAuth } from "./Auth";
 import { AuthProps } from "../../helpers/types";
+import { ThemeContextProps, useTheme } from "./Theme";
 
 const NavBar = () => {
-  // -- try using false
-  // dark-theme --> true
   const [loading, setLoading] = useState(true);
-  const [theme, setTheme] = useState(themeColors.currentTheme);
-
-  const { currentUser, logout } = useAuth() as AuthProps;
-  const authenticated = currentUser != null;
+  const { USER, logout } = useAuth() as AuthProps;
+  const { theme, setTheme } = useTheme() as ThemeContextProps;
+  const { pathname } = useLocation();
+  const authenticated = USER != null;
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
+    setTimeout(() => setLoading(false), 2000);
   }, []);
-
-  useEffect(() => {
-    changeTheme(theme);
-  }, [theme]);
 
   return (
     <div className="header">
@@ -32,35 +27,35 @@ const NavBar = () => {
         <Link className="link" to={"/problems"}>
           Problems
         </Link>
-        <Link className="link" to={"/"}>
-          About
-        </Link>
         {authenticated && (
           <Link className="link" to={"/leaderboard"}>
             Leaderboard
           </Link>
         )}
+        <Link className="link" to={"/"}>
+          About
+        </Link>
       </div>
       <div className="header-right">
         {!loading && authenticated && (
-          <div className="header-profile">
-            {/* profile pic */}
-            <img
-              src={ProfPic}
-              alt=""
-              onClick={() => {
-                logout();
-              }}
-            />
+          <div className="header-profile auth-tab">
+            {USER && (
+              <Link to={`/profile/${USER.username}`} className="profile-pic">
+                <img
+                  src={`${USER.photoURL ? USER.photoURL : DefaultProfilePic}`}
+                />
+              </Link>
+            )}
+            <span onClick={() => logout()}>Logout</span>
           </div>
         )}
         {!loading && !authenticated && (
-          <div>
-            <Link className="link" to={"/register"}>
+          <div className=" auth-tab">
+            <Link className="link" to={`/register?redirect=${pathname}`}>
               Register
             </Link>
             <small> or </small>
-            <Link className="link" to={"/login"}>
+            <Link className="link" to={`/login?redirect=${pathname}`}>
               Login
             </Link>
           </div>
@@ -68,12 +63,7 @@ const NavBar = () => {
         <div className={`theme-icon ${theme ? "light" : "dark"}`}>
           <img
             src={theme ? LightMode : DarkMode}
-            alt=""
-            onClick={() => {
-              setTheme(!theme);
-              // needs to reload to change theme of monaco editor
-              // location.reload();
-            }}
+            onClick={() => setTheme(!theme)}
           />
         </div>
       </div>

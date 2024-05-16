@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Google from "../assets/google.png";
 import { useAuth } from "../components/Auth";
@@ -7,6 +7,7 @@ import { AuthProps } from "../../helpers/types";
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const [inputs, setInputs] = useState({
+    username: "",
     email: "",
     password: "",
     confirmpassword: "",
@@ -18,6 +19,14 @@ const Register = () => {
   const navigate = useNavigate();
   const redirect = new URLSearchParams(location.search).get("redirect") || "/";
 
+  useEffect(() => {
+    if (successfull) {
+      if (redirect.includes("/login") || redirect.includes("/register"))
+        navigate("/");
+      else navigate(redirect);
+    }
+  }, [successfull]);
+
   const handleChange = (event: any) => {
     setInputs((prev) => ({ ...prev, [event.target.name]: event.target.value }));
   };
@@ -27,7 +36,9 @@ const Register = () => {
     if (loading) return;
 
     setErrorMessage(" ");
-    const { password, email, confirmpassword } = inputs;
+    const { username, password, email, confirmpassword } = inputs;
+    if (!username || username.length < 5)
+      return setErrorMessage("Invalid Username");
     if (!email || email.length < 11 || !email.includes("@gmail.com"))
       return setErrorMessage("Invalid Email");
     if (!password || password.length < 6)
@@ -36,7 +47,7 @@ const Register = () => {
       return setErrorMessage("Passwords do not match.");
 
     setLoading(true);
-    (await signUpWithEmail(email, password, setErrorMessage)) &&
+    (await signUpWithEmail(username.toLocaleLowerCase(), email, password, setErrorMessage)) &&
       setSuccessfull(true);
     setLoading(false);
   };
@@ -54,6 +65,13 @@ const Register = () => {
       {loading && <span className="loader"></span>}
       <form action="" onSubmit={signUpWithEmailHelper}>
         <h2>Register</h2>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Username"
+          onChange={handleChange}
+        />
         <input
           type="email"
           name="email"
@@ -78,7 +96,10 @@ const Register = () => {
         <small className="error-message">{errorMessage}</small>
         <button disabled={loading}>Register</button>
 
-        <Link className="link" to="/login">
+        <Link
+          className="link"
+          to={`/login?redirect=${encodeURIComponent(redirect)}`}
+        >
           Already have an account?
         </Link>
 

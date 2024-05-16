@@ -1,4 +1,4 @@
-//  npm
+// npm
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 // Pages
 import Leaderboard from "./pages/Leaderboard";
@@ -11,7 +11,7 @@ import About from "./pages/About";
 // Components
 import NavBar from "./components/NavBar";
 import Protect from "./components/Protect";
-
+// Styles
 import "./style.scss";
 
 const Layout = () => (

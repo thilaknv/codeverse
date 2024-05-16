@@ -1,59 +1,29 @@
 import { questionProps } from "./types";
+import axios from "axios";
 
-const themeColors = {
-  currentTheme: localStorage.getItem("theme") == "true" ? true : false,
-  dark: {
-    bColors: ["#2a2a2a", "#3a3a3a", "#4a4a4a", "#5a5a5a"],
-    colors: ["#9f9f9f", "#c9c9c9", "#e0e0e0", "#f0f0f0"],
-  },
-  light: {
-    bColors: ["#cfcfcf", "#dfdfdf", "#efefef", "#ffffff"],
-    colors: ["#707070", "#303030", "#202020", "#101010"],
-  },
-};
-
-const changeTheme = (theme: boolean) => {
-  themeColors.currentTheme = theme;
-  const root: any = document.querySelector(":root");
-  const style = root?.style;
-
-  const bColor = theme ? themeColors.dark.bColors : themeColors.light.bColors;
-  const color = theme ? themeColors.dark.colors : themeColors.light.colors;
-
-  bColor.forEach((color, index) => {
-    style.setProperty(`--background-color${index + 1}`, color);
-  });
-
-  color.forEach((color, index) => {
-    style.setProperty(`--color${index + 1}`, color);
-  });
-
-  localStorage.setItem("theme", theme ? "true" : "false");
-};
-
-const sort_functions = {
+const sortFunctions = {
   status: {
     sign: -1,
     sort: (arr: questionProps[]) => {
       arr.sort((a: questionProps, b: questionProps) =>
         a.status == b.status
-          ? a.id < b.id
+          ? a.qid < b.qid
             ? -1
             : 1
           : a.status
-          ? sort_functions.status.sign
-          : -sort_functions.status.sign
+          ? sortFunctions.status.sign
+          : -sortFunctions.status.sign
       );
-      sort_functions.status.sign = -sort_functions.status.sign;
+      sortFunctions.status.sign = -sortFunctions.status.sign;
     },
   },
-  id: {
+  qid: {
     sign: 1,
     sort: (arr: questionProps[]) => {
       arr.sort((a: questionProps, b: questionProps) =>
-        a.id < b.id ? sort_functions.id.sign : -sort_functions.id.sign
+        a.qid < b.qid ? sortFunctions.qid.sign : -sortFunctions.qid.sign
       );
-      sort_functions.id.sign = -sort_functions.id.sign;
+      sortFunctions.qid.sign = -sortFunctions.qid.sign;
     },
   },
   difficulty: {
@@ -61,16 +31,90 @@ const sort_functions = {
     sort: (arr: questionProps[]) => {
       arr.sort((a: questionProps, b: questionProps) => {
         return a.difficulty == b.difficulty
-          ? a.id < b.id
+          ? a.qid < b.qid
             ? -1
             : 1
           : a.difficulty < b.difficulty
-          ? sort_functions.difficulty.sign
-          : -sort_functions.difficulty.sign;
+          ? sortFunctions.difficulty.sign
+          : -sortFunctions.difficulty.sign;
       });
-      sort_functions.difficulty.sign = -sort_functions.difficulty.sign;
+      sortFunctions.difficulty.sign = -sortFunctions.difficulty.sign;
     },
   },
 };
 
-export { changeTheme, themeColors, sort_functions };
+const sortUsersOnPoints = (list: any[]) => {
+  // 2 for easy, 4 for medium, 6 for hard
+  // const findPoints = (arr: number[]) => arr[0] * 2 + arr[1] * 4 + arr[2] * 6;
+  list.sort((a: any, b: any) =>
+    a.stats.points == b.stats.points
+      ? a.stats.solvedQuestionsSet.length - b.stats.solvedQuestionsSet.length
+      : b.points - a.points
+  );
+};
+
+// RUN USING judge0
+
+const RUN_CODE_API = async (
+  code: string,
+  language: "Java" | "Python" | "CPP",
+  runOrSubmit: 0 | 1
+) => {
+
+  const LANGUAGE_CODES = { Java: 91, Python: 92, CPP: 52 };
+
+  const OPTIONS_1 = {
+    method: "POST",
+    url: "https://judge0-ce.p.rapidapi.com/submissions",
+    params: {
+      base64_encoded: "false",
+      fields: "*",
+    },
+    headers: {
+      "content-type": "application/json",
+      "Content-Type": "application/json",
+      "X-RapidAPI-Key": import.meta.env.VITE_X_RAPIDAPI_KEY,
+      "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+    },
+    data: {
+      language_id: LANGUAGE_CODES[language],
+      source_code: code,
+      stdin: runOrSubmit,
+    },
+  };
+
+  const OPTIONS_2 = {
+    method: "GET",
+    url: "https://judge0-ce.p.rapidapi.com/submissions/",
+    headers: {
+      "X-RapidAPI-Key": import.meta.env.VITE_X_RAPIDAPI_KEY,
+      "X-RapidAPI-Host": "judge0-ce.p.rapidapi.com",
+    },
+  };
+
+  try {
+    const response = await axios.request(OPTIONS_1);
+    // response --> response.data.token is used to get details of submition
+
+    OPTIONS_2.url =
+      "https://judge0-ce.p.rapidapi.com/submissions/" + response.data.token;
+
+    let response1 = await axios.request(OPTIONS_2);
+    let check = response1.data.status.id < 3;
+    let retry = 0;
+
+    while (check && retry++ < 6) {
+      // just to wait
+      await new Promise((res) => setTimeout(res, 1000));
+
+      response1 = await axios.request(OPTIONS_2);
+      check = response1.data.status.id < 3;
+    }
+
+    return { DATA: response1.data };
+  } catch (error) {
+    return { ERROR: "Internal Error" };
+  }
+};
+
+export { sortFunctions, sortUsersOnPoints, RUN_CODE_API };

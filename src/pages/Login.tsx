@@ -19,7 +19,9 @@ const Login = () => {
 
   useEffect(() => {
     if (successfull) {
-      navigate(redirect);
+      if (redirect.includes("/login") || redirect.includes("/register"))
+        navigate("/");
+      else navigate(redirect);
     }
   }, [successfull]);
 
