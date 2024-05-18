@@ -26,10 +26,9 @@ const SubmisionPopUp = ({ setResult, result }: any) => {
           </div>
           <div>
             <small>Runtime</small>
-            <strong className="monospace">{result.runtime}ms</strong>
+            <strong className="monospace">{result.runtime}s</strong>
           </div>
         </div>
-
         {result.status && (
           <div className="points">
             <strong className="monospace">

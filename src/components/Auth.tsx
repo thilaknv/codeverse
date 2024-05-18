@@ -99,7 +99,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const logout = async () => await signOut(auth);
+  const logout = async () => {
+    try {
+      signOut(auth);
+      location.reload();
+    } catch (error) {
+      console.log("Error", error);
+    }
+  };
 
   return (
     <AuthContext.Provider

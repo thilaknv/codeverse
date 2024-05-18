@@ -34,7 +34,8 @@ const CodeBox = ({
       if ((str = localStorage.getItem(`${lang}-boiler-${question.qid}`))) {
         code[lang] = str;
       } else {
-        code[lang] = atob(question.boilerPlateCode[lang.toLowerCase()]);
+        // code changed here
+        code[lang] = atob(question.solutionCode[lang.toLowerCase()]);
       }
     });
     return code;
@@ -72,7 +73,6 @@ const CodeBox = ({
     if (!RunOrSubmit) {
       setOutput(output.DATA);
     } else {
-      console.log(output.DATA);
       setSubmitionResult(output.DATA);
       setOutput({ ...output.DATA, stdout: null });
     }

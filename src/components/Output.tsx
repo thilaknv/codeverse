@@ -4,7 +4,7 @@ import DropDown from "../assets/drop_down.png";
 interface Props {
   expandOutput: React.Dispatch<React.SetStateAction<number>>;
   output?: any;
-  loading: boolean;     
+  loading: boolean;
   question: any;
 }
 

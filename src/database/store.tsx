@@ -13,6 +13,7 @@ import {
 } from "firebase/firestore";
 
 // import { testQuestions } from "../../bin/questions";
+// import { codes } from "../../bin/codes";
 
 const addUser = async (
   username: string,
@@ -117,8 +118,29 @@ const updateQuestionSolved = async (
 // };
 
 // const addQuestionHelper = async () => {
-//   testQuestions.forEach(async (Q) => await addQuestion(Q));
+//   testQuestions.forEach(async (Q, index) => {
+//     Q.boilerPlateCode.python = btoa(codes[index].actualBoilerPlateCode.python);
+//     Q.solutionCode.python = btoa(codes[index].actualSolutionCode.python);
+//     Q.driverCode.python = btoa(codes[index].actualDriverCode.python);
+
+//     Q.boilerPlateCode.java = btoa(codes[index].actualBoilerPlateCode.java);
+//     Q.solutionCode.java = btoa(codes[index].actualSolutionCode.java);
+//     Q.driverCode.java = btoa(codes[index].actualDriverCode.java);
+
+//     Q.boilerPlateCode.cpp = btoa(codes[index].actualBoilerPlateCode.cpp);
+//     Q.solutionCode.cpp = btoa(codes[index].actualSolutionCode.cpp);
+//     Q.driverCode.cpp = btoa(codes[index].actualDriverCode.cpp);
+
+//     // console.log(Q);
+//     await addQuestion(Q);
+//   });
 // };
+
+// setTimeout(async () => {
+//   console.log("start");
+//   await addQuestionHelper();
+//   console.log("end");
+// }, 5000);
 
 export {
   addUser,

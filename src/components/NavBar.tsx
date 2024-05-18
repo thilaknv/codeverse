@@ -14,7 +14,6 @@ const NavBar = () => {
   const { USER, logout } = useAuth() as AuthProps;
   const { theme, setTheme } = useTheme() as ThemeContextProps;
   const { pathname } = useLocation();
-  const authenticated = USER != null;
 
   useEffect(() => {
     setTimeout(() => setLoading(false), 2000);
@@ -27,7 +26,7 @@ const NavBar = () => {
         <Link className="link" to={"/problems"}>
           Problems
         </Link>
-        {authenticated && (
+        {USER && (
           <Link className="link" to={"/leaderboard"}>
             Leaderboard
           </Link>
@@ -37,7 +36,7 @@ const NavBar = () => {
         </Link>
       </div>
       <div className="header-right">
-        {!loading && authenticated && (
+        {!loading && USER && (
           <div className="header-profile auth-tab">
             {USER && (
               <Link to={`/profile/${USER.username}`} className="profile-pic">
@@ -49,7 +48,7 @@ const NavBar = () => {
             <span onClick={() => logout()}>Logout</span>
           </div>
         )}
-        {!loading && !authenticated && (
+        {!loading && !USER && (
           <div className=" auth-tab">
             <Link className="link" to={`/register?redirect=${pathname}`}>
               Register
