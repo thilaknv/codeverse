@@ -35,7 +35,7 @@ const CodeBox = ({
         code[lang] = str;
       } else {
         // code changed here
-        code[lang] = atob(question.solutionCode[lang.toLowerCase()]);
+        code[lang] = atob(question.boilerPlateCode[lang.toLowerCase()]);
       }
     });
     return code;

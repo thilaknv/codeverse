@@ -8,7 +8,7 @@ import {
 
 export interface ThemeContextProps {
   theme: boolean;
-  setTheme:  React.Dispatch<React.SetStateAction<boolean>>;
+  setTheme: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const ThemeContext = createContext<ThemeContextProps | null>(null);
@@ -54,7 +54,7 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
     <ThemeContext.Provider
       value={{
         theme,
-        setTheme
+        setTheme,
       }}
     >
       {children}
