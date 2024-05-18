@@ -8,7 +8,7 @@ import { getAllQuestions } from "../database/store";
 import { useAuth } from "../components/Auth";
 
 const Problemset = () => {
-  const [order, setOrder] = useState("");
+  const [_, setOrder] = useState("");
   const [questions, setQuestions] = useState<any>();
   const [loading, setLoading] = useState(true);
   const { USER } = useAuth() as AuthProps;

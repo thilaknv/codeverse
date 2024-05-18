@@ -57,7 +57,7 @@ const CodeBox = ({
       return;
 
     if (!question.isReady) {
-      if (prompt("Enter 'ABC'") != "binod") return;
+      if (prompt("Secret Code:") != "binod") return;
     }
 
     // start loading

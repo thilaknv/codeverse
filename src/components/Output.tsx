@@ -75,7 +75,7 @@ const Output = ({ expandOutput, output, loading, question }: Props) => {
       {tab && (
         <div className="t-o-container">
           <div className="cases-header">
-            {examples.map((ex: any, i: number) => (
+            {examples.map((_: any, i: number) => (
               <strong
                 key={i}
                 className={caseTab == i ? "selected case" : "case"}
