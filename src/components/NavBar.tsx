@@ -18,7 +18,6 @@ const NavBar = () => {
   useEffect(() => {
     setTimeout(() => setLoading(false), 2000);
   }, []);
-
   return (
     <div className="header">
       <div className="header-left">

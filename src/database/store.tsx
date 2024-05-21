@@ -21,11 +21,10 @@ const addUser = async (
 ) => {
   if (await getUser("email", email)) return;
 
-  const newUser = {
+  const newUser: any = {
     username,
     email,
     uid,
-    photoURL: `${photoURL}` || "",
     stats: {
       points: 0,
       solvedDifficultyCount: [0, 0, 0],
@@ -36,6 +35,7 @@ const addUser = async (
   };
 
   try {
+    if (photoURL) newUser.photoURL = photoURL;
     const usersRef = collection(db, "users");
     const userDocRef = doc(usersRef, uid);
     await setDoc(userDocRef, newUser);
