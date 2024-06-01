@@ -26,7 +26,7 @@ export const ThemeProvider = ({ children }: PropsWithChildren) => {
       colors: ["#8c9db6", "#9cadc6", "#e0e0e0", "#87aef0"],
     },
     light: {
-      bColors: ["#dfdfdf", "#e9e9e9", "#f5f5f5", "#ffffff"],
+      bColors: ["#d9e9e9", "#e9eef3", "#f5f5f5", "#ffffff"],
       colors: ["#707070", "#303030", "#202020", "#0077b6"],
     },
   };

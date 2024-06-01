@@ -10,14 +10,17 @@ import ProgressBar from "../components/ProgressBar";
 import { AuthProps } from "../../helpers/types";
 import { useAuth } from "../components/Auth";
 import { getUser } from "../database/store";
+import { useLocation } from "react-router-dom";
 
 const Profile = () => {
   const { USER } = useAuth() as AuthProps;
   const [currUSER, setCurrUSER] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const { pathname } = useLocation();
+
   useEffect(() => {
     const getUserHelper = async () => {
-      const loc = window.location.pathname.split("/");
+      const loc = pathname.split("/");
       if (loc.length == 3) {
         const username = loc[2];
         try {
@@ -33,7 +36,7 @@ const Profile = () => {
     getUserHelper().then(() => {
       setLoading(false);
     });
-  }, []);
+  }, [pathname]);
 
   // temporary data
   const Q_data = {

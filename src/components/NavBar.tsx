@@ -1,10 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import DefaultProfilePic from "../assets/profile.png";
-import Logo from "../assets/logo.svg";
+import Logo from "../assets/logo.png";
 import LightMode from "../assets/light_mode.png";
 import DarkMode from "../assets/dark_mode.png";
 import { useEffect, useState } from "react";
-import {} from "../../helpers/logics";
 import { useAuth } from "./Auth";
 import { AuthProps } from "../../helpers/types";
 import { ThemeContextProps, useTheme } from "./Theme";
@@ -21,18 +20,25 @@ const NavBar = () => {
   return (
     <div className="header">
       <div className="header-left">
-        <img className="logo" src={Logo} alt="" />
-        <Link className="link" to={"/problems"}>
+        <Link className={`link`} to={"/"}>
+          <img className="logo" src={Logo} />
+        </Link>
+        <Link
+          className={`link nav ${pathname == "/problems" ? "selected" : ""}`}
+          to={"/problems"}
+        >
           Problems
         </Link>
         {USER && (
-          <Link className="link" to={"/leaderboard"}>
+          <Link
+            className={`link nav ${
+              pathname == "/leaderboard" ? "selected" : ""
+            }`}
+            to={"/leaderboard"}
+          >
             Leaderboard
           </Link>
         )}
-        <Link className="link" to={"/"}>
-          About
-        </Link>
       </div>
       <div className="header-right">
         {!loading && USER && (
@@ -58,11 +64,11 @@ const NavBar = () => {
             </Link>
           </div>
         )}
-        <div className={`theme-icon ${theme ? "light" : "dark"}`}>
-          <img
-            src={theme ? LightMode : DarkMode}
-            onClick={() => setTheme(!theme)}
-          />
+        <div
+          className={`theme-icon ${theme ? "light" : "dark"}`}
+          onClick={() => setTheme(!theme)}
+        >
+          <img src={theme ? LightMode : DarkMode} />
         </div>
       </div>
     </div>
