@@ -49,7 +49,7 @@ const sortUsersOnPoints = (list: any[]) => {
   list.sort((a: any, b: any) =>
     a.stats.points == b.stats.points
       ? a.stats.solvedQuestionsSet.length - b.stats.solvedQuestionsSet.length
-      : b.points - a.points
+      : b.stats.points - a.stats.points
   );
 };
 
@@ -60,7 +60,6 @@ const RUN_CODE_API = async (
   language: "Java" | "Python" | "CPP",
   runOrSubmit: 0 | 1
 ) => {
-
   const LANGUAGE_CODES = { Java: 91, Python: 92, CPP: 52 };
 
   const OPTIONS_1 = {
