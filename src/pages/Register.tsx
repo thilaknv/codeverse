@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Google from "../assets/google.png";
 import { useAuth } from "../components/Auth";
 import { AuthProps } from "../../helpers/types";
+import Footer from "../components/Footer";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
@@ -19,6 +20,9 @@ const Register = () => {
   const navigate = useNavigate();
   const redirect = new URLSearchParams(location.search).get("redirect") || "/";
 
+  useEffect(() => {
+    document.title = "Register";
+  }, []);
   useEffect(() => {
     if (successfull) {
       if (redirect.includes("/login") || redirect.includes("/register"))
@@ -47,8 +51,12 @@ const Register = () => {
       return setErrorMessage("Passwords do not match.");
 
     setLoading(true);
-    (await signUpWithEmail(username.toLocaleLowerCase(), email, password, setErrorMessage)) &&
-      setSuccessfull(true);
+    (await signUpWithEmail(
+      username.toLocaleLowerCase(),
+      email,
+      password,
+      setErrorMessage
+    )) && setSuccessfull(true);
     setLoading(false);
   };
 
@@ -61,7 +69,7 @@ const Register = () => {
   };
 
   return (
-    <div className="register">
+    <div className="register scrollable">
       {loading && <span className="loader"></span>}
       <form action="" onSubmit={signUpWithEmailHelper}>
         <h2>Register</h2>
@@ -125,6 +133,7 @@ const Register = () => {
           {/* <img src={Github} alt="" className="auth-img" /> */}
         </div>
       </form>
+      <Footer />
     </div>
   );
 };

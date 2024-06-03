@@ -18,7 +18,7 @@ const Solve = () => {
   if (isNaN(Qno) || Qno != Math.trunc(Qno) || QnoStr.indexOf(".") != -1)
     return (
       <div>
-        <h3>Question Not Found</h3>
+        <h3>Invalid Question</h3>
       </div>
     );
 
@@ -30,6 +30,11 @@ const Solve = () => {
   const { USER, setUSER } = useAuth() as AuthProps;
   const [submissionResult, setSubmissionResult] = useState<any>(false);
   const [result, setResult] = useState<any>(false);
+
+  useEffect(() => {
+    if (question) document.title = `${question.title}`;
+    else document.title = `CodeVerse`;
+  }, [question]);
 
   useEffect(() => {
     if (!submissionResult) return;
@@ -72,7 +77,7 @@ const Solve = () => {
     const getQuestionHelper = async (Qno: number) => {
       try {
         const question = await getQuestion(Qno);
-        if (USER) {
+        if (USER && question) {
           setQuestion({
             ...question,
             solved: USER.stats.solvedQuestionsSet.includes(Qno),
@@ -93,8 +98,8 @@ const Solve = () => {
   return (
     <div>
       {!loading && !question && (
-        <div>
-          <h3>Question Not Found</h3>
+        <div className="solve">
+          <h3>Invalid Question</h3>
         </div>
       )}
       {!loading && question && (
@@ -106,7 +111,7 @@ const Solve = () => {
             ></SubmisionPopUp>
           )}
           <Split
-            className="solve"
+            className="solve scrollable"
             sizes={[40, 60]}
             minSize={[300, 500]}
             expandToMin={false}

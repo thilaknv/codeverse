@@ -5,12 +5,16 @@ import { AuthProps } from "../../helpers/types";
 import { useEffect, useState } from "react";
 import { getAllUsers } from "../database/store";
 import { sortUsersOnPoints } from "../../helpers/logics";
+import Footer from "../components/Footer";
 
 const Leaderboard = () => {
   const { USER } = useAuth() as AuthProps;
   const [loading, setLoading] = useState(true);
   const [USERS_LIST, setUSERS_LIST] = useState<any[]>();
   const [MY_UID, setMY_UID] = useState(null);
+  useEffect(() => {
+    document.title = "Leaderboard";
+  }, []);
 
   useEffect(() => {
     setMY_UID(USER && USER.uid ? USER.uid : null);
@@ -30,7 +34,7 @@ const Leaderboard = () => {
   }, [USER]);
 
   return (
-    <div className="leaderboard">
+    <div className="leaderboard scrollable">
       <h2> Leaderboard</h2>
       <div className="container">
         {loading && <span className="loader"></span>}
@@ -77,6 +81,8 @@ const Leaderboard = () => {
             </div>
           ))}
       </div>
+
+      {!loading && <Footer></Footer>}
     </div>
   );
 };

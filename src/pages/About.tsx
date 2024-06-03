@@ -1,4 +1,5 @@
 import { HashLink } from "react-router-hash-link";
+import Footer from "../components/Footer";
 import LandingIMG from "../assets/landing-page-coding.png";
 import JavaVector from "../assets/java-vector.png";
 import PythonVector from "../assets/python-vector.png";
@@ -6,18 +7,19 @@ import CppVector from "../assets/cpp-vector.png";
 import ProbList from "../assets/prob-list.png";
 import TrackProgress from "../assets/stats-vector.png";
 import LeaderBoardVector from "../assets/leaderboard-vector.png";
-import Github from "../assets/github1.png";
-import Linkdein from "../assets/linkedin1.png";
-import Twitter from "../assets/twitter1.png";
 import { useAuth } from "../components/Auth";
 import { AuthProps } from "../../helpers/types";
 import TypeWriter from "../components/TypeWriter";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const About = () => {
   const { USER } = useAuth() as AuthProps;
+  useEffect(() => {
+    document.title = "CodeVerse";
+  }, []);
   return (
-    <div className="landing-page">
+    <div className="landing-page scrollable">
       <div className="wellcome">
         <div className="landing-img">
           <img src={LandingIMG} />
@@ -74,20 +76,7 @@ const About = () => {
           <p>Engage with a leaderboard feature to compare your performance.</p>
         </div>
       </div>
-      <div className="footer">
-        <div className="social-media">
-          <a href="https://github.com/thilaknv/codeverse">
-            <img src={Github} />
-          </a>
-          <a href="#">
-            <img src={Linkdein} />
-          </a>
-          <a href="#">
-            <img src={Twitter} />
-          </a>
-        </div>
-        <p>Copyright &copy; 2024 Codeverse</p>
-      </div>
+      <Footer />
     </div>
   );
 };

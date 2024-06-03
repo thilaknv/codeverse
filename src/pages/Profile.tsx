@@ -38,17 +38,20 @@ const Profile = () => {
     });
   }, [pathname]);
 
+  useEffect(() => {
+    if (currUSER) document.title = `${currUSER.username}`;
+    else document.title = `Profile`;
+  }, [currUSER]);
+
   // temporary data
   const Q_data = {
     totalCount: 7,
-    easyCount: 1,
-    mediumCount: 4,
-    hardCount: 2,
+    countByDiffic: [1, 4, 2],
   };
   // temporary data
 
   return (
-    <div className="profile">
+    <div className="profile scrollable">
       {loading && (
         <div>
           <span className="loader"></span>
@@ -124,7 +127,10 @@ const Profile = () => {
                 <h3>{currUSER.stats.points}</h3>
               </div>
               <div className="solved stats-div">
-                <p>Solved</p>
+                <p>
+                  Solved ({currUSER.stats.solvedQuestionsSet.length}/
+                  {Q_data.totalCount})
+                </p>
                 <h3>
                   {Number(
                     (
@@ -154,26 +160,20 @@ const Profile = () => {
               </div>
               <div className="solved-e-m-h stats-div">
                 <ProgressBar
-                  value={Math.floor(
-                    (currUSER.stats.solvedDifficultyCount[0] * 100) /
-                      Q_data.easyCount
-                  )}
+                  solved={currUSER.stats.solvedDifficultyCount[0]}
+                  total={Q_data.countByDiffic[0]}
                   color={"#2a9d8f"}
                   difficulty={"Easy"}
                 />
                 <ProgressBar
-                  value={Math.floor(
-                    (currUSER.stats.solvedDifficultyCount[1] * 100) /
-                      Q_data.mediumCount
-                  )}
+                  solved={currUSER.stats.solvedDifficultyCount[1]}
+                  total={Q_data.countByDiffic[1]}
                   color={"#e1a306"}
                   difficulty={"Medium"}
                 />
                 <ProgressBar
-                  value={Math.floor(
-                    (currUSER.stats.solvedDifficultyCount[2] * 100) /
-                      Q_data.hardCount
-                  )}
+                  solved={currUSER.stats.solvedDifficultyCount[2]}
+                  total={Q_data.countByDiffic[2]}
                   color={"#d62828"}
                   difficulty={"Hard"}
                 />

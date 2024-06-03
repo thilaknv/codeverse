@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import Footer from "../components/Footer";
 import Sort from "../assets/sort.png";
 import Solved from "../assets/solved.png";
 import { useEffect, useState } from "react";
@@ -15,6 +16,9 @@ const Problemset = () => {
 
   const difficulty = ["Easy", "Medium", "Hard"];
 
+  useEffect(() => {
+    document.title = "CodeVerse Problems";
+  }, []);
   useEffect(() => {
     const getQuestionHelper = async () => {
       try {
@@ -47,7 +51,7 @@ const Problemset = () => {
   };
 
   return (
-    <div className="problems">
+    <div className="problems scrollable">
       {loading && <span className="loader"></span>}
       {!loading && (
         <>
@@ -88,6 +92,7 @@ const Problemset = () => {
           ))}
         </>
       )}
+      {!loading && <Footer />}
     </div>
   );
 };

@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Google from "../assets/google.png";
 import { useAuth } from "../components/Auth";
 import { AuthProps } from "../../helpers/types";
+import Footer from "../components/Footer";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -16,6 +17,10 @@ const Login = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const redirect = new URLSearchParams(location.search).get("redirect") || "/";
+
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
 
   useEffect(() => {
     if (successfull) {
@@ -55,7 +60,7 @@ const Login = () => {
   };
 
   return (
-    <div className="login">
+    <div className="login scrollable">
       {loading && <span className="loader"></span>}
       <form action="" onSubmit={handleSubmit}>
         <h2>Login</h2>
@@ -102,6 +107,7 @@ const Login = () => {
           />
         </div>
       </form>
+      <Footer></Footer>
     </div>
   );
 };
