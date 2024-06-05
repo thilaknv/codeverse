@@ -123,14 +123,14 @@ const Profile = () => {
             <h3>Stats</h3>
             <div className="stats">
               <div className="total-points stats-div">
-                <p>Total Points</p>
+                <small>Total Points</small>
                 <h3>{currUSER.stats.points}</h3>
               </div>
               <div className="solved stats-div">
-                <p>
+                <small>
                   Solved ({currUSER.stats.solvedQuestionsSet.length}/
                   {Q_data.totalCount})
-                </p>
+                </small>
                 <h3>
                   {Number(
                     (
@@ -142,7 +142,7 @@ const Profile = () => {
                 </h3>
               </div>
               <div className="accuracy stats-div">
-                <p>Accuracy</p>
+                <small>Accuracy</small>
                 <h3>
                   {currUSER.stats.uniqueRejections +
                     currUSER.stats.uniqueAcceptence !=

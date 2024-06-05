@@ -79,6 +79,7 @@ const Register = () => {
           id="username"
           placeholder="Username"
           onChange={handleChange}
+          autoComplete="off"
         />
         <input
           type="email"
@@ -86,6 +87,7 @@ const Register = () => {
           id="email"
           placeholder="Email"
           onChange={handleChange}
+          autoComplete="off"
         />
         <input
           type="password"
@@ -93,6 +95,7 @@ const Register = () => {
           id="password"
           placeholder="Create Password"
           onChange={handleChange}
+          autoComplete="off"
         />
         <input
           type="password"
@@ -100,6 +103,7 @@ const Register = () => {
           id="confirmpassword"
           placeholder="Confirm Password"
           onChange={handleChange}
+          autoComplete="off"
         />
         <small className="error-message">{errorMessage}</small>
         <button disabled={loading}>Register</button>

@@ -127,7 +127,6 @@ const CodeBox = ({
         language={language.toLowerCase()}
         value={code[language]}
         theme={theme ? "vs-dark" : "light"}
-        options={{ fontWeight: "200", fontFamily: "monospace" }}
       />
       <div className="codebox-footer">
         <button

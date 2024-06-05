@@ -27,6 +27,7 @@ const ProgressBar = ({
             strokeWidth: 4,
           },
           trail: {
+            fontFamily:"Teko",
             stroke: "#87aef099",
           },
         }}

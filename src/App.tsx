@@ -13,6 +13,7 @@ import NavBar from "./components/NavBar";
 import Protect from "./components/Protect";
 // Styles
 import "./style.scss";
+import Admin from "./pages/Admin";
 
 const Layout = () => (
   <>
@@ -40,12 +41,16 @@ const router = createBrowserRouter([
         element: <Problems />,
       },
       {
-        path: "/Solve/:id",
+        path: "/solve/:id",
         element: <Solve />,
       },
       {
-        path: "/Leaderboard",
+        path: "/leaderboard",
         element: <Protect children={<Leaderboard />} />,
+      },
+      {
+        path: "/admin",
+        element: <Protect children={<Admin />} />,
       },
       {
         path: "/register",

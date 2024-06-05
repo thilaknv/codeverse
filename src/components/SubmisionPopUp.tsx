@@ -9,7 +9,7 @@ const SubmisionPopUp = ({ setResult, result }: any) => {
         <div className={`result`}>
           <div>
             <small>Language</small>
-            <strong className="monospace">
+            <strong>
               {localStorage.getItem("prefered-coding-language")}
             </strong>
           </div>
@@ -20,26 +20,24 @@ const SubmisionPopUp = ({ setResult, result }: any) => {
                 <small> (hidden)</small>
               </i>
             </small>
-            <strong className="monospace">
+            <strong>
               {result.correctOutputs}/{result.totalOutputs}
             </strong>
           </div>
           <div>
             <small>Runtime</small>
-            <strong className="monospace">{result.runtime}s</strong>
+            <strong>{result.runtime}s</strong>
           </div>
         </div>
         {result.status && (
           <div className="points">
-            <strong className="monospace">
+            <strong>
               {result.points}+=
               {result.pointsToAdd}
             </strong>
             <p>
               Total Points:{"  "}
-              <span className="monospace">
-                {result.points + result.pointsToAdd}
-              </span>
+              <span>{result.points + result.pointsToAdd}</span>
             </p>
             <small>
               &#9432;{" "}

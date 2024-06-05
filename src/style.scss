@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Teko:wght@300..700&display=swap");
 
 :root {
   --background-color1: #2a2a2a;
@@ -17,7 +18,7 @@
   --height: 100vh;
   --width: 100vw;
 
-  --header-height: 60px;
+  --header-height: 70px;
 
   --line: #797979;
   --code-font-family: "JetBrains Mono", monospace;
@@ -59,7 +60,7 @@
   .register,
   .login {
     width: var(--width);
-    height: calc(9 * var(--height) / 10 - 20px);
+    height: calc(var(--height) - var(--header-height) - 10px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -74,6 +75,7 @@
       border-radius: 10px;
       gap: 10px;
       box-shadow: inset 0px 0px 3px;
+      margin: 50px 0px;
 
       input {
         background-color: transparent;
@@ -159,7 +161,9 @@
         background-color: var(--background-color3);
       }
       .logo {
-        height: 50px;
+        height: 40px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 4px;
       }
     }
     .header-right {
@@ -260,7 +264,7 @@
   // Problems
   .problems {
     width: var(--width);
-    height: calc(var(--height) - var(--header-height) - 20px);
+    height: calc(var(--height) - var(--header-height) - 10px);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -679,26 +683,6 @@
         }
       }
 
-      .editorrr {
-        box-sizing: border-box;
-
-        .margin {
-          .margin-view-overlays {
-            .line-numbers {
-              font-size: 12px;
-            }
-          }
-        }
-        .view-lines {
-          * {
-            font-family: var(--code-font-family);
-          }
-        }
-        .minimap {
-          display: none;
-        }
-      }
-
       .codebox-footer {
         position: absolute;
         bottom: 0px;
@@ -770,18 +754,19 @@
     z-index: 1;
     .submission {
       position: relative;
-      background-color: var(--background-color2);
+      background-color: var(--background-color1);
       max-width: var(--width);
       padding: 30px;
       border-radius: 10px;
-      box-shadow: 0px 0px 5px var(--submission-shadow-color);
+      box-shadow: inset 0px 0px 3px var(--submission-shadow-color);
       overflow: auto;
       text-align: justify;
       .hide-submission {
         cursor: pointer;
-        font-size: 30px;
+        color: var(--color4);
+        font-size: 20px;
         position: absolute;
-        top: 5px;
+        top: 10px;
         right: 15px;
       }
       &::-webkit-scrollbar {
@@ -809,7 +794,7 @@
         padding: 20px;
         border-radius: 10px;
         div {
-          background-color: var(--background-color1);
+          background-color: var(--background-color4);
           padding: 10px;
           display: flex;
           flex-direction: column;
@@ -825,8 +810,8 @@
         align-items: center;
         gap: 10px;
         strong {
-          font-family: var(--code-font-family);
-          font-size: 50px;
+          // font-family: var(--code-font-family);
+          font-size: 30px;
         }
         span {
           font-size: 20px;
@@ -840,10 +825,8 @@
 
   // LeaderBoard
   .leaderboard {
-    flex: 1;
     background-color: var(--background-color2);
     border-radius: 5px;
-    margin: 0px 10px 10px;
     position: relative;
     overflow: auto;
     h2 {
@@ -857,7 +840,7 @@
       align-items: center;
       gap: 10px;
       padding: 10px;
-      height: calc(var(--height) - var(--header-height) - 20px);
+      height: calc(var(--height) - var(--header-height) - 10px);
       overflow: auto;
       padding-top: 90px;
       &::-webkit-scrollbar {
@@ -972,7 +955,7 @@
           text-decoration: none;
           font-size: small;
           img {
-            width: 20px;
+            width: 15px;
           }
         }
       }
@@ -1004,12 +987,14 @@
         .accuracy {
           text-align: center;
           h3 {
-            font-size: 30px;
+            font-family: "Teko", sans-serif;
+            font-size: 40px;
             color: var(--color4);
           }
         }
         .solved-e-m-h {
           // box-shadow: inset 0px 0px 3px var(--color4);
+            font-family: "Teko", sans-serif;
           display: flex;
           justify-content: space-evenly;
           min-width: 50%;
@@ -1045,7 +1030,7 @@
   }
 
   .landing-page {
-    height: calc(var(--height) - var(--header-height) - 20px);
+    height: calc(var(--height) - var(--header-height) - 10px);
     overflow: auto;
     .wellcome {
       min-height: calc(9 * var(--height) / 10);
@@ -1062,7 +1047,12 @@
         gap: 10px;
         width: 350px;
         .link {
-          width: max-content;
+          font-weight: 700;
+          width: fit-content;
+          h1 {
+            font-family: "Teko", sans-serif;
+            font-size: 45px;
+          }
         }
         .slogan {
           height: 60px;
@@ -1149,16 +1139,105 @@
   }
 
   .footer {
+    width: 100%;
+    background-color: var(--background-color3);
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
     padding: 50px 10px 30px;
+    font-size: small;
     .social-media {
       display: flex;
       gap: 20px;
       img {
+        width: 15px;
         cursor: pointer;
+      }
+    }
+  }
+
+  // code editor
+  .editorrr {
+    box-sizing: border-box;
+    .margin {
+      .margin-view-overlays {
+        .line-numbers {
+          font-size: 12px;
+        }
+      }
+    }
+    .view-lines {
+      * {
+        font-family: var(--code-font-family);
+      }
+    }
+    .minimap {
+      display: none;
+    }
+  }
+
+  .modify-add {
+    padding: 10px 30px;
+    display: flex;
+    flex-direction: column;
+    .modify-q,
+    .add-q {
+      background-color: var(--background-color2);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+      input,
+      textarea {
+        // width: 100%;
+        padding: 10px;
+        background: var(--background-color4);
+        min-width: 100%;
+        max-width: 100%;
+        border: 1px solid;
+        color: var(--color1);
+        outline: none;
+      }
+      textarea {
+        min-height: 100px;
+      }
+
+      .sub1 {
+        padding: 20px;
+        width: 100%;
+        background-color: var(--background-color3);
+        .sub2 {
+          border-left: 2px solid var(--background-color1);
+          border-top: 2px solid var(--background-color1);
+          padding: 10px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          // background-color: var(--background-color2);
+        }
+      }
+
+      .code {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        .tabs {
+          display: flex;
+          gap: 20px;
+          .tab {
+            cursor: pointer;
+            padding: 10px 15px;
+            background-color: var(--background-color2);
+            border: 1px solid transparent;
+          }
+          .selected {
+            color: var(--color4);
+            background-color: var(--background-color1);
+            border: 1px solid;
+          }
+        }
       }
     }
   }

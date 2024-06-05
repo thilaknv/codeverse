@@ -17,7 +17,7 @@ const Problemset = () => {
   const difficulty = ["Easy", "Medium", "Hard"];
 
   useEffect(() => {
-    document.title = "CodeVerse Problems";
+    document.title = "Problems";
   }, []);
   useEffect(() => {
     const getQuestionHelper = async () => {

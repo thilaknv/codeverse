@@ -70,6 +70,7 @@ const Login = () => {
           id="email"
           placeholder="Email"
           onChange={handleChange}
+          autoComplete="off"
         />
         <input
           type="password"
@@ -77,6 +78,7 @@ const Login = () => {
           id="password"
           placeholder="Password"
           onChange={handleChange}
+          autoComplete="off"
         />
         <small className="error-message">{errorMessage}</small>
         <button disabled={loading}>Login</button>
