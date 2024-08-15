@@ -41,7 +41,7 @@ const Register = () => {
 
     setErrorMessage(" ");
     const { username, password, email, confirmpassword } = inputs;
-    if (!username || username.length < 5)
+    if (!username || username.length < 5 || username.includes(" "))
       return setErrorMessage("Invalid Username");
     if (!email || email.length < 11 || !email.includes("@gmail.com"))
       return setErrorMessage("Invalid Email");
